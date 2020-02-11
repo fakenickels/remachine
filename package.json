@@ -1,0 +1,38 @@
+{
+  "name": "trex",
+  "version": "0.1.0",
+  "description": "Trex 🦖",
+  "license": "MIT",
+  "esy": {
+    "build": "dune build -p #{self.name}",
+    "buildDev": "refmterr dune build --root . --only-package #{self.name}",
+    "install": "esy-installer #{self.target_dir / 'default' / self.name '.install'}",
+    "NOTE": "Optional release Section. Customizes result of `esy release`",
+    "release": {
+      "bin": [
+        "Trex"
+      ]
+    },
+    "buildEnv": {
+      "ODOC_SYNTAX": "re"
+    }
+  },
+  "scripts": {
+    "run": "esy x Trex",
+    "doc": "esy dune build @doc"
+  },
+  "dependencies": {
+    "@opam/dune": "*",
+    "@reason-native/console": "*",
+    "@reason-native/pastel": "*",
+    "@esy-ocaml/reason": ">= 3.4.0 < 3.6.0",
+    "ocaml": "~4.8.1000"
+  },
+  "devDependencies": {
+    "@opam/merlin": "*",
+    "@reason-native/rely": "*",
+    "refmterr": "*",
+    "ocaml": "~4.8.1000",
+    "@opam/odoc": "*"
+  }
+}

@@ -1,0 +1,4 @@
+(executable
+  (name Trex)
+  (public_name Trex)
+  (libraries console.lib lib))
