@@ -19,13 +19,14 @@
   },
   "scripts": {
     "run": "esy x Trex",
+    "format": "dune build @fmt --auto-promote --root .",
     "doc": "esy dune build @doc"
   },
   "dependencies": {
     "@opam/dune": "*",
     "@reason-native/console": "*",
     "@reason-native/pastel": "*",
-    "@esy-ocaml/reason": ">= 3.4.0 < 3.6.0",
+    "@esy-ocaml/reason": "~3.5.0",
     "ocaml": "~4.8.1000"
   },
   "devDependencies": {
@@ -33,6 +34,8 @@
     "@reason-native/rely": "*",
     "refmterr": "*",
     "ocaml": "~4.8.1000",
-    "@opam/odoc": "*"
+    "@opam/odoc": "*",
+    "@opam/fmt": "*",
+    "@opam/ocamlformat": "*"
   }
 }
