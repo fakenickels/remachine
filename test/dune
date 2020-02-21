@@ -1,0 +1,5 @@
+(executable
+  (name RunTests)
+  (public_name RunTests.exe)
+  (libraries trex console.lib rely.lib)
+  (ocamlopt_flags (-linkall -g)))
