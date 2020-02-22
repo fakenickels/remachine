@@ -2,4 +2,5 @@
   (name lib)
   (flags (-w -40 -w +26))
   (public_name trex)
-  (libraries pastel.lib))
+  (libraries tyxml brisk-reconciler)
+  (preprocess (pps brisk-reconciler.ppx)))

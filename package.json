@@ -24,11 +24,18 @@
     "doc": "esy dune build @doc"
   },
   "dependencies": {
-    "@opam/dune": "*",
-    "@reason-native/console": "*",
-    "@reason-native/pastel": "*",
     "@esy-ocaml/reason": "~3.5.0",
-    "ocaml": "~4.8.1000"
+    "@opam/dune": "*",
+    "@opam/lwt": "^4.0.0",
+    "@opam/fmt": "*",
+    "@opam/logs": "*",
+    "@opam/tyxml": "4.3.0",
+    "ocaml": "~4.8.1000",
+    "@brisk/brisk-reconciler": "github:briskml/brisk-reconciler#34e5991",
+    "@reason-native-web/morph": "*",
+    "@reason-native-web/morph_server_http": "*",
+    "@opam/mtime": "*",
+    "@opam/uri": "*"
   },
   "devDependencies": {
     "@opam/merlin": "*",
@@ -36,7 +43,14 @@
     "refmterr": "*",
     "ocaml": "~4.8.1000",
     "@opam/odoc": "*",
-    "@opam/fmt": "*",
     "@opam/ocamlformat": "*"
+  },
+  "resolutions": {
+    "@reason-native-web/morph": "reason-native-web/morph:morph.json#e03f189836d2851ca4e52bfd6310fd6edc00279e",
+    "@reason-native-web/morph_server": "reason-native-web/morph:morph_server.json#e03f189836d2851ca4e52bfd6310fd6edc00279e",
+    "@reason-native-web/morph_server_http": "reason-native-web/morph:morph_server_http.json#e03f189836d2851ca4e52bfd6310fd6edc00279e",
+    "@opam/httpaf-lwt-unix": "anmonteiro/httpaf:httpaf-lwt-unix.opam#90e7c8783a99bdb9f098b017a2ca34516de0abad",
+    "@opam/httpaf-lwt": "anmonteiro/httpaf:httpaf-lwt.opam#90e7c8783a99bdb9f098b017a2ca34516de0abad",
+    "@opam/httpaf": "anmonteiro/httpaf:httpaf.opam#90e7c8783a99bdb9f098b017a2ca34516de0abad"
   }
 }

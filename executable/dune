@@ -1,4 +1,5 @@
 (executable
   (name Trex)
   (public_name Trex)
-  (libraries console.lib lib))
+  (libraries logs logs.fmt fmt.tty lib brisk-reconciler lwt lwt.unix morph morph_server_http uri)
+  (preprocess (pps brisk-reconciler.ppx)))
