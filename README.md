@@ -1,5 +1,24 @@
 # trex 🦖
 
+⚠️⚠️⚠️️ WORK IN PROGRESS ⚠️⚠️⚠️
+
+## Running
+
+### Development
+
+```
+esy install
+esy client:dev && esy server:dev
+```
+
+### Release
+
+```
+esy install
+esy client:release && esy server:release
+_esy/default/build/default/executable/server/Server.exe
+```
+
 ## Credits
 
 Sunset photo by
