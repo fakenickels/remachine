@@ -1,0 +1,6 @@
+(executable
+  (name Server)
+  (public_name Server)
+  (libraries App lib_native logs logs.fmt fmt.tty brisk-reconciler lwt lwt.unix morph morph_server_http uri)
+  (preprocess (pps brisk-reconciler.ppx))
+  (package trex))

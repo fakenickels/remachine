@@ -1,0 +1,5 @@
+(library
+ (name lib_native)
+ (libraries logs brisk-reconciler)
+ (preprocess (pps brisk-reconciler.ppx))
+ (implements lib))

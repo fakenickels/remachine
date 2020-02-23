@@ -1,0 +1,4 @@
+(library
+  (name App)
+  (libraries lib brisk-reconciler)
+  (preprocess (pps brisk-reconciler.ppx)))

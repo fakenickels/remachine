@@ -3,6 +3,10 @@ module RemoteAction = Brisk_reconciler.RemoteAction;
 type node =
   | Div(layoutNode)
   | Span(layoutNode)
+  | Image({
+      className: string,
+      src: string,
+    })
   | Text({text: string})
 and layoutNode = {
   className: option(string),
@@ -53,26 +57,17 @@ let%nativeComponent div = (~children, ~className=?, (), hooks) => (
   hooks,
 );
 
-let%nativeComponent span = (~children, ~className=?, (), hooks) => (
+let%nativeComponent span =
+                    (
+                      ~className=?,
+                      ~text="",
+                      ~onClick as _: option(unit => unit)=?,
+                      (),
+                      hooks,
+                    ) => (
   {
     make: () => {
-      Span({className, children: []});
-    },
-    configureInstance: (~isFirstRender as _, node) => {
-      node;
-    },
-    children,
-    insertNode,
-    deleteNode,
-    moveNode,
-  },
-  hooks,
-);
-
-let%nativeComponent text = (~text, (), hooks) => (
-  {
-    make: () => {
-      Text({text: text});
+      Span({className, children: [Text({text: text})]});
     },
     configureInstance: (~isFirstRender as _, node) => {
       node;
@@ -85,9 +80,27 @@ let%nativeComponent text = (~text, (), hooks) => (
   hooks,
 );
 
-let string = txt => <text text=txt />;
+let%nativeComponent img = (~className, ~src, (), hooks) => (
+  {
+    make: () => {
+      Image({className, src});
+    },
+    configureInstance: (~isFirstRender as _, node) => {
+      node;
+    },
+    children: Brisk_reconciler.empty,
+    insertNode,
+    deleteNode,
+    moveNode,
+  },
+  hooks,
+);
 
-let render_to_string = render => {
+let render = _application => {
+  Logs.warn(m => m("This is no-op on native"));
+};
+
+let render_to_string = application => {
   let rendered =
     ref(
       Brisk_reconciler.RenderedElement.render(
@@ -97,7 +110,7 @@ let render_to_string = render => {
           deleteNode,
           moveNode,
         },
-        render(),
+        application,
       ),
     );
 
@@ -121,6 +134,12 @@ let render_to_string = render => {
       ++ ">"
       ++ (node.children |> List.map(toHtml) |> List.fold_left((++), ""))
       ++ "</div>"
+    | Image(node) =>
+      "<img"
+      ++ (
+        " class=\"" ++ node.className ++ "\"" ++ " src=\"" ++ node.src ++ "\""
+      )
+      ++ ">"
     | Span(node) =>
       "<span"
       ++ (
@@ -143,7 +162,9 @@ let render_to_string = render => {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/utilities.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/components.min.css"/>
   <title>Trex</title>
-</head><body>|}
+</head><body id="root">|}
   ++ toHtml(hostView)
-  ++ {|</body></html>|};
+  ++ {|
+  <script type="application/javascript" src="static/_esy/default/build/default/executable/client/Client.bc.js"></script>
+  </body></html>|};
 };

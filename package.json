@@ -4,7 +4,7 @@
   "description": "Trex 🦖",
   "license": "MIT",
   "esy": {
-    "build": "dune build -p #{self.name}",
+    "build": "refmterr dune build -p #{self.name}",
     "buildDev": "refmterr dune build --root . --only-package #{self.name}",
     "install": "esy-installer #{self.target_dir / 'default' / self.name '.install'}",
     "NOTE": "Optional release Section. Customizes result of `esy release`",
@@ -18,12 +18,18 @@
     }
   },
   "scripts": {
-    "run": "esy x Trex",
+    "server:dev": "esy x Server",
+    "client:dev": "esy b dune build executable/client/Client.bc.js",
+    "client:release": "esy b dune build executable/client/Client.bc.js --profile release",
+    "server:release": "esy build",
     "test": "esy x RunTests.exe",
     "format": "dune build @fmt --auto-promote --root .",
     "doc": "esy dune build @doc"
   },
   "dependencies": {
+    "@opam/js_of_ocaml": "^3.4.0",
+    "@opam/js_of_ocaml-compiler": "^3.4.0",
+    "@opam/js_of_ocaml-lwt": "^3.4.0",
     "@esy-ocaml/reason": "~3.5.0",
     "@opam/dune": "*",
     "@opam/lwt": "^4.0.0",
