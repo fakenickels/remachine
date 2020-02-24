@@ -1,5 +1,6 @@
 (library
- (name lib_native)
+ (name trex_native)
+ (public_name trex.native)
  (libraries logs brisk-reconciler)
  (preprocess (pps brisk-reconciler.ppx))
- (implements lib))
+ (implements trex))

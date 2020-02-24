@@ -16,7 +16,7 @@ esy client:dev && esy server:dev
 ```
 esy install
 esy client:release && esy server:release
-_esy/default/build/default/executable/server/Server.exe
+_esy/default/build/default/example/server/Server.exe
 ```
 
 ## Credits

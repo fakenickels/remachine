@@ -19,8 +19,8 @@
   },
   "scripts": {
     "server:dev": "esy x Server",
-    "client:dev": "esy b dune build executable/client/Client.bc.js",
-    "client:release": "esy b dune build executable/client/Client.bc.js --profile release",
+    "client:dev": "esy b dune build example/client/Client.bc.js",
+    "client:release": "esy b dune build example/client/Client.bc.js --profile release",
     "server:release": "esy build",
     "test": "esy x RunTests.exe",
     "format": "dune build @fmt --auto-promote --root .",

@@ -1,6 +1,6 @@
 (executable
   (name Client)
   (public_name Client.bc.js)
-  (libraries App lib_jsoo brisk-reconciler)
+  (libraries App trex.jsoo brisk-reconciler)
   (preprocess (pps js_of_ocaml-ppx brisk-reconciler.ppx))
   (package trex))

@@ -1,4 +1,4 @@
 (library
   (name App)
-  (libraries lib brisk-reconciler)
+  (libraries trex brisk-reconciler)
   (preprocess (pps brisk-reconciler.ppx)))

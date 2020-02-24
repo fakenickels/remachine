@@ -1,4 +1,4 @@
-open Lib.React;
+open Trex.React;
 
 type state = {
   winter: int,

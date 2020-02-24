@@ -1,4 +1,4 @@
-open Lib.React;
+open Trex.React;
 
 Fmt_tty.setup_std_outputs();
 Logs.set_level(Some(Logs.Info));

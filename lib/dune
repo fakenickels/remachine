@@ -1,5 +1,6 @@
 (library
-  (name lib)
+  (name trex)
+  (public_name trex)
   (flags (-w -40 -w +26))
   (virtual_modules React)
   (libraries brisk-reconciler)

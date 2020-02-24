@@ -1,0 +1,1 @@
+Trex.React.render(<App />);

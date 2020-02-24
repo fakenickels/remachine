@@ -165,6 +165,6 @@ let render_to_string = application => {
 </head><body id="root">|}
   ++ toHtml(hostView)
   ++ {|
-  <script type="application/javascript" src="static/_esy/default/build/default/executable/client/Client.bc.js"></script>
+  <script type="application/javascript" src="static/_esy/default/build/default/example/client/Client.bc.js"></script>
   </body></html>|};
 };
