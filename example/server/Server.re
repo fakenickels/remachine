@@ -17,7 +17,7 @@ let handler = (request: Morph.Request.t) => {
 
   switch (request.meth, path_parts) {
   | (`GET, []) =>
-    Morph.Response.html(render_to_string(<App />), Morph.Response.empty)
+    Morph.Response.html(renderToString(<App />), Morph.Response.empty)
 
   | (`GET, ["static", ...path]) =>
     let filepath =

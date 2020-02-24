@@ -1,0 +1,4 @@
+(library
+  (name App)
+  (libraries trex)
+  (preprocess (pps js_of_ocaml.ppx brisk-reconciler.ppx)))

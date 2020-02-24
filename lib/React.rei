@@ -24,4 +24,4 @@ let img:
   Brisk_reconciler.element(node);
 
 let render: Brisk_reconciler.element(node) => unit;
-let render_to_string: Brisk_reconciler.element(node) => string;
+let renderToString: Brisk_reconciler.element(node) => string;

@@ -141,6 +141,4 @@ let render = application => {
   ();
 };
 
-let render_to_string = _application => {
-  "This is no-op on jsoo";
-};
+let renderToString = _application => "This is no-op on jsoo";

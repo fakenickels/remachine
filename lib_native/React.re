@@ -1,6 +1,7 @@
 module RemoteAction = Brisk_reconciler.RemoteAction;
 
 type node =
+  | Empty(list(node))
   | Div(layoutNode)
   | Span(layoutNode)
   | Image({
@@ -15,20 +16,24 @@ and layoutNode = {
 
 let insertNode = (~parent: node, ~child: node, ~position as _) => {
   switch (parent) {
+  | Empty(children) => Empty(children @ [child])
   | Span(node) => Span({...node, children: node.children @ [child]})
   | Div(node) => Div({...node, children: node.children @ [child]})
   | parent => parent
   };
 };
+
 let deleteNode = (~parent: node, ~child: node, ~position as _) => {
   switch (parent) {
+  | Empty(children) => Empty(children |> List.filter(c => c === child))
   | Div(node) =>
     Div({...node, children: node.children |> List.filter(c => c === child)})
   | Span(node) =>
-    Div({...node, children: node.children |> List.filter(c => c === child)})
+    Span({...node, children: node.children |> List.filter(c => c === child)})
   | parent => parent
   };
 };
+
 let moveNode = (~parent, ~child as _, ~from as _, ~to_ as _) => {
   parent;
 };
@@ -38,9 +43,6 @@ Brisk_reconciler.addStaleTreeHandler(() =>
   RemoteAction.send(~action=(), onStale)
 );
 
-/*
-   Step 2: Define some native components (aka primitives)
- */
 let%nativeComponent div = (~children, ~className=?, (), hooks) => (
   {
     make: () => {
@@ -100,16 +102,11 @@ let render = _application => {
   Logs.warn(m => m("This is no-op on native"));
 };
 
-let render_to_string = application => {
+let renderToString = application => {
   let rendered =
     ref(
       Brisk_reconciler.RenderedElement.render(
-        {
-          node: Div({className: None, children: []}),
-          insertNode,
-          deleteNode,
-          moveNode,
-        },
+        {node: Empty([]), insertNode, deleteNode, moveNode},
         application,
       ),
     );
@@ -122,49 +119,59 @@ let render_to_string = application => {
     | None => default
     | Some(a) => a;
 
-  let rec toHtml =
-    fun
+  let rec toHtml = (node: node): list(string) =>
+    switch (node) {
+    | Empty(children) => children |> List.map(toHtml) |> List.flatten
     | Div(node) =>
-      "<div"
-      ++ (
-        node.className
-        |> Option.map(v => Printf.sprintf(" class=\"%s\"", v))
-        |> or_else("")
-      )
-      ++ ">"
-      ++ (node.children |> List.map(toHtml) |> List.fold_left((++), ""))
-      ++ "</div>"
-    | Image(node) =>
-      "<img"
-      ++ (
-        " class=\"" ++ node.className ++ "\"" ++ " src=\"" ++ node.src ++ "\""
-      )
-      ++ ">"
+      List.concat([
+        [
+          "<div",
+          node.className
+          |> Option.map(v => Printf.sprintf(" class=\"%s\"", v))
+          |> or_else(""),
+          ">",
+        ],
+        node.children |> List.map(toHtml) |> List.flatten,
+        ["</div>"],
+      ])
+    | Image(node) => [
+        "<img",
+        " class=\"" ++ node.className ++ "\"",
+        " src=\"" ++ node.src ++ "\"",
+        ">",
+      ]
     | Span(node) =>
-      "<span"
-      ++ (
-        node.className
-        |> Option.map(v => Printf.sprintf(" class=\"%s\"", v))
-        |> or_else("")
-      )
-      ++ ">"
-      ++ (node.children |> List.map(toHtml) |> List.fold_left((++), ""))
-      ++ "</span>"
-    | Text(node) => node.text;
+      List.concat([
+        [
+          "<span",
+          node.className
+          |> Option.map(v => Printf.sprintf(" class=\"%s\"", v))
+          |> or_else(""),
+          ">",
+        ],
+        node.children |> List.map(toHtml) |> List.flatten,
+        ["</span>"],
+      ])
+    | Text(node) => [node.text]
+    };
 
-  {|
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/base.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/utilities.min.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/components.min.css"/>
-  <title>Trex</title>
-</head><body id="root">|}
-  ++ toHtml(hostView)
-  ++ {|
-  <script type="application/javascript" src="static/_esy/default/build/default/example/client/Client.bc.js"></script>
-  </body></html>|};
+  List.concat([
+    [
+      {|<!DOCTYPE html>|},
+      {|<html lang="en">|},
+      {|<head>|},
+      {|<meta charset="UTF-8">|},
+      {|<meta name="viewport" content="width=device-width, initial-scale=1.0">|},
+      {|<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/base.min.css"/>|},
+      {|<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/utilities.min.css"/>|},
+      {|<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.2.0/components.min.css"/>|},
+      {|<title>Trex</title></head><body id="root">|},
+    ],
+    hostView |> toHtml,
+    [
+      {|<script type="application/javascript" src="static/_esy/default/build/default/example/client/Client.bc.js"></script>|},
+      {|</body></html>|},
+    ],
+  ])
+  |> List.fold_left((++), "");
 };

@@ -8,7 +8,17 @@ type state = {
 
 let%component make = () => {
   let%hook (count, setCount) =
-    Brisk_reconciler.Hooks.state({winter: 0, photography: 0, travel: 0});
+    Trex.Hooks.state({winter: 0, photography: 0, travel: 0});
+
+  let%hook () =
+    Trex.Hooks.effect(
+      OnMount,
+      () => {
+        // This doesn't work right now :(
+        print_endline("Hello world");
+        None;
+      },
+    );
 
   <div className="max-w-md rounded overflow-hidden shadow-lg">
     <img className="w-full" src="/static/sunset.jpg" />
