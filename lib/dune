@@ -4,4 +4,4 @@
   (flags (-w -40 -w +26))
   (virtual_modules React)
   (libraries js_of_ocaml brisk-reconciler)
-  (preprocess (pps js_of_ocaml.ppx brisk-reconciler.ppx)))
+  (preprocess (pps js_of_ocaml-ppx brisk-reconciler.ppx)))

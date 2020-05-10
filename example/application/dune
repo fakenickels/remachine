@@ -1,4 +1,4 @@
 (library
   (name App)
-  (libraries js_of_ocaml reason trex)
-  (preprocess (pps js_of_ocaml.ppx brisk-reconciler.ppx)))
+  (libraries js_of_ocaml reason trex base64)
+  (preprocess (pps js_of_ocaml-ppx brisk-reconciler.ppx)))

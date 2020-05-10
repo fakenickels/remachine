@@ -120,10 +120,12 @@ let casesToGraphviz = (cases: list(Parsetree.case)) => {
   "digraph {\n" ++ casesToGraphviz'(cases) ++ "}";
 };
 
-let%component make = () => {
-  let%hook (code, setCode) =
-    Trex.Hooks.state(
-      {|
+let getDefaultPlaceholder = () => {
+  let searchParams = Dom_html.window##.location##.search |> Js.to_string;
+  let searchParams =
+    Regexp.global_replace(Regexp.regexp({|\?|}), searchParams, "");
+
+  let fallback = {|
     type elapsed = float;
 
     type taskStatus =
@@ -149,11 +151,38 @@ let%component make = () => {
       | (Running(elapsed), Tick(tick)) => Running(elapsed +. tick)
       | _ => state
       };
-  |},
-    );
+  |};
+
+  searchParams == ""
+    ? fallback
+    : Base64.decode(searchParams)
+      |> (
+        fun
+        | Ok(value) => value
+        | _ => fallback
+      );
+};
+
+let%component make = () => {
+  let%hook (code, setCode) = Trex.Hooks.state(getDefaultPlaceholder());
   let%hook (dots, setDots) = Trex.Hooks.state("");
 
+  let saveCodeToHistory = () => {
+    let encoded = Base64.encode_exn(code);
+    let newSearchParams = "?" ++ encoded;
+    print_endline("Pushing " ++ newSearchParams);
+
+    let _ =
+      Js.Unsafe.global##.history##pushState(
+        Js.null,
+        Js.null,
+        Js.string(newSearchParams),
+      );
+    ();
+  };
+
   let createChart = () => {
+    saveCodeToHistory();
     let lexbuf = Lexing.from_string(code);
 
     let ast = Reason_toolchain.RE.use_file(lexbuf);
@@ -189,23 +218,23 @@ let%component make = () => {
   <div className="grid block md:grid-cols-2 divide-y-1 h-screen">
     <div className="p-5">
       <div className="block">
-      <input
-        className="bg-gray-100 my-input w-full h-1/2"
-        value=code
-        cols=20
-        onChange={event => {
-          let target = event##.target;
+        <input
+          className="bg-gray-100 my-input w-full h-1/2"
+          value=code
+          cols=20
+          onChange={event => {
+            let target = event##.target;
 
-          switch (Js.Opt.to_option(target)) {
-          | Some(target) =>
-            let node: Js.t(Dom_html.inputElement) = Obj.magic(target);
+            switch (Js.Opt.to_option(target)) {
+            | Some(target) =>
+              let node: Js.t(Dom_html.inputElement) = Obj.magic(target);
 
-            print_endline("Saving...")
-            setCode(_ => node##.value |> Js.to_string);
-          | None => ()
-          };
-        }}
-      />
+              print_endline("Saving...");
+              setCode(_ => node##.value |> Js.to_string);
+            | None => ()
+            };
+          }}
+        />
       </div>
       <div className="block my-5">
         <span
@@ -214,7 +243,9 @@ let%component make = () => {
           text="Generate"
         />
       </div>
-      <div className="bg-gray-100 pl-10"> <span className="chart whitespace-pre" text=dots /> </div>
+      <div className="bg-gray-100 pl-10">
+        <span className="chart whitespace-pre" text=dots />
+      </div>
     </div>
     <div className="h-full flex items-center justify-center">
       <div id="my-chart"> <span text="" /> </div>
