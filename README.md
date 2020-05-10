@@ -2,6 +2,12 @@
 
 ⚠️⚠️⚠️️ WORK IN PROGRESS ⚠️⚠️⚠️
 
+## 
+- [x] Variant simple
+- [x] Variants in tuple
+- [ ] Nested pattern matching 
+- [ ] Tune UI a bit more
+
 ## Running
 
 ### Development
