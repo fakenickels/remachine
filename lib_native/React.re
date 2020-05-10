@@ -9,8 +9,10 @@ type node =
       src: string,
     })
   | Text({text: string})
+  | Input({className: string})
 and layoutNode = {
   className: option(string),
+  id: option(string),
   children: list(node),
 };
 
@@ -43,10 +45,10 @@ Brisk_reconciler.addStaleTreeHandler(() =>
   RemoteAction.send(~action=(), onStale)
 );
 
-let%nativeComponent div = (~children, ~className=?, (), hooks) => (
+let%nativeComponent div = (~children, ~id=?, ~className=?, (), hooks) => (
   {
     make: () => {
-      Div({className, children: []});
+      Div({className, id, children: []});
     },
     configureInstance: (~isFirstRender as _, node) => {
       node;
@@ -69,7 +71,7 @@ let%nativeComponent span =
                     ) => (
   {
     make: () => {
-      Span({className, children: [Text({text: text})]});
+      Span({className, id: None, children: [Text({text: text})]});
     },
     configureInstance: (~isFirstRender as _, node) => {
       node;
@@ -86,6 +88,22 @@ let%nativeComponent img = (~className, ~src, (), hooks) => (
   {
     make: () => {
       Image({className, src});
+    },
+    configureInstance: (~isFirstRender as _, node) => {
+      node;
+    },
+    children: Brisk_reconciler.empty,
+    insertNode,
+    deleteNode,
+    moveNode,
+  },
+  hooks,
+);
+
+let%nativeComponent input = (~className, ~value as _, ~onChange as _, (), hooks) => (
+  {
+    make: () => {
+      Input({className: className});
     },
     configureInstance: (~isFirstRender as _, node) => {
       node;
@@ -139,6 +157,11 @@ let renderToString = application => {
         " class=\"" ++ node.className ++ "\"",
         " src=\"" ++ node.src ++ "\"",
         ">",
+      ]
+    | Input(node) => [
+        "<textarea",
+        " class=\"" ++ node.className ++ "\"",
+        "></textarea>",
       ]
     | Span(node) =>
       List.concat([

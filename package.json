@@ -21,6 +21,7 @@
     "server:dev": "esy x Server",
     "client:dev": "esy b dune build example/client/Client.bc.js",
     "client:release": "esy b dune build example/client/Client.bc.js --profile release",
+    "bundle": "rm -rf ./docs/bundle.js && cp _esy/default/build/default/example/client/Client.bc.js ./docs/bundle.js",
     "server:release": "esy build",
     "test": "esy x RunTests.exe",
     "format": "dune build @fmt --auto-promote --root .",

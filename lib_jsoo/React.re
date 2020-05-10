@@ -31,11 +31,12 @@ open Brisk_reconciler;
 
 let document = Dom_html.window##.document;
 
-let%nativeComponent div = (~children, ~className: string="", (), hooks) => (
+let%nativeComponent div = (~children, ~id: string="", ~className: string="", (), hooks) => (
   {
     make: () => {
       let node = Dom_html.createDiv(document);
       node##.className := Js.string(className);
+      node##.id := Js.string(id);
       node;
     },
     configureInstance: (~isFirstRender as _, node) => {
@@ -102,6 +103,36 @@ let%nativeComponent img = (~className, ~src, (), hooks) => (
       /* TODO: Proper way to downcast? */
       let node: Js.t(Dom_html.imageElement) = Obj.magic(node);
       node##.src := Js.string(src);
+      node |> Dom_html.element;
+    },
+    children: Brisk_reconciler.empty,
+    insertNode,
+    deleteNode,
+    moveNode,
+  },
+  hooks,
+);
+
+let%nativeComponent input = (~className, ~value, ~onChange, (), hooks) => (
+  {
+    make: () => {
+      let node = Dom_html.createTextarea(document);
+      node##.className := Js.string(className);
+      node##.value := Js.string(value);
+      node##.onchange := Dom_html.handler(e => {
+        onChange(e);
+        Js.bool(false);
+      });
+      node |> Dom_html.element;
+    },
+    configureInstance: (~isFirstRender as _, node) => {
+      /* TODO: Proper way to downcast? */
+      let node: Js.t(Dom_html.inputElement) = Obj.magic(node);
+      node##.value := Js.string(value);
+      node##.onchange := Dom_html.handler(e => {
+        onChange(e);
+        Js.bool(false);
+      });
       node |> Dom_html.element;
     },
     children: Brisk_reconciler.empty,

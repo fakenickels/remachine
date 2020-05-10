@@ -1,4 +1,4 @@
-# trex 🦖
+# remachine viz 🦖
 
 ⚠️⚠️⚠️️ WORK IN PROGRESS ⚠️⚠️⚠️
 
@@ -21,5 +21,4 @@ _esy/default/build/default/example/server/Server.exe
 
 ## Credits
 
-Sunset photo by
-[Sebastien Gabriel](https://unsplash.com/@sgabriel?utm_medium=referral&utm_campaign=photographer-credit&utm_content=creditBadge)
+The awesome [Trex](https://github.com/baransu/trex/) setup from @baransu

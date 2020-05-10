@@ -3,5 +3,5 @@
   (public_name trex)
   (flags (-w -40 -w +26))
   (virtual_modules React)
-  (libraries brisk-reconciler)
+  (libraries js_of_ocaml brisk-reconciler)
   (preprocess (pps js_of_ocaml.ppx brisk-reconciler.ppx)))
