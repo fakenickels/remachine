@@ -113,12 +113,13 @@ let%nativeComponent img = (~className, ~src, (), hooks) => (
   hooks,
 );
 
-let%nativeComponent input = (~className, ~value, ~onChange, (), hooks) => (
+let%nativeComponent input = (~className, ~cols, ~value, ~onChange, (), hooks) => (
   {
     make: () => {
       let node = Dom_html.createTextarea(document);
       node##.className := Js.string(className);
       node##.value := Js.string(value);
+      node##.rows := cols;
       node##.onchange := Dom_html.handler(e => {
         onChange(e);
         Js.bool(false);

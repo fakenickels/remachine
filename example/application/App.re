@@ -186,12 +186,13 @@ let%component make = () => {
     ();
   };
 
-  <div className="grid grid-cols-2 divide-y-1 h-screen">
+  <div className="grid block md:grid-cols-2 divide-y-1 h-screen">
     <div className="p-5">
-      <div className="block bg-gray-100">
+      <div className="block">
       <input
-        className="my-input w-full h-1/2"
+        className="bg-gray-100 my-input w-full h-1/2"
         value=code
+        cols=20
         onChange={event => {
           let target = event##.target;
 
@@ -214,7 +215,7 @@ let%component make = () => {
       </div>
       <div className="bg-gray-100 pl-10"> <span className="chart whitespace-pre" text=dots /> </div>
     </div>
-    <div className="flex items-center justify-center">
+    <div className="h-full flex items-center justify-center">
       <div id="my-chart"> <span text="" /> </div>
     </div>
   </div>;

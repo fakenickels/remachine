@@ -25,7 +25,14 @@ let img:
   Brisk_reconciler.element(node);
 
 let input:
-  (~key: Brisk_reconciler.Key.t=?, ~className: string,  ~value: string, ~onChange: Js_of_ocaml.Js.t(Js_of_ocaml.Dom_html.event) => unit, unit) =>
+  (
+    ~key: Brisk_reconciler.Key.t=?,
+    ~className: string,
+    ~cols: int,
+    ~value: string,
+    ~onChange: Js_of_ocaml.Js.t(Js_of_ocaml.Dom_html.event) => unit,
+    unit
+  ) =>
   Brisk_reconciler.element(node);
 
 let render: Brisk_reconciler.element(node) => unit;

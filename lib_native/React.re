@@ -9,7 +9,7 @@ type node =
       src: string,
     })
   | Text({text: string})
-  | Input({className: string})
+  | Input({className: string, cols: int})
 and layoutNode = {
   className: option(string),
   id: option(string),
@@ -100,10 +100,10 @@ let%nativeComponent img = (~className, ~src, (), hooks) => (
   hooks,
 );
 
-let%nativeComponent input = (~className, ~value as _, ~onChange as _, (), hooks) => (
+let%nativeComponent input = (~className, ~cols, ~value as _, ~onChange as _, (), hooks) => (
   {
     make: () => {
-      Input({className: className});
+      Input({className: className, cols});
     },
     configureInstance: (~isFirstRender as _, node) => {
       node;
@@ -161,6 +161,7 @@ let renderToString = application => {
     | Input(node) => [
         "<textarea",
         " class=\"" ++ node.className ++ "\"",
+        " cols=\"" ++ string_of_int(node.cols) ++ "\"",
         "></textarea>",
       ]
     | Span(node) =>
