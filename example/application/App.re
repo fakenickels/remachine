@@ -200,6 +200,7 @@ let%component make = () => {
           | Some(target) =>
             let node: Js.t(Dom_html.inputElement) = Obj.magic(target);
 
+            print_endline("Saving...")
             setCode(_ => node##.value |> Js.to_string);
           | None => ()
           };
