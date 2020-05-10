@@ -1,12 +1,15 @@
-# remachine viz 🦖
+# remachine - pattern matching viz ♻️
 
 ⚠️⚠️⚠️️ WORK IN PROGRESS ⚠️⚠️⚠️
 
 ## 
 - [x] Variant simple
 - [x] Variants in tuple
+- [x] Shareable url
 - [ ] Nested pattern matching 
 - [ ] Tune UI a bit more
+- [ ] Step by step mode
+- [ ] Compilation mode
 
 ## Running
 
