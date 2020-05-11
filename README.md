@@ -10,6 +10,7 @@
 - [ ] Tune UI a bit more
 - [ ] Step by step mode
 - [ ] Compilation mode
+- [ ] Codemirror or Monaco 
 
 ## Running
 
