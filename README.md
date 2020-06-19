@@ -1,5 +1,7 @@
 # remachine - pattern matching viz ♻️
 
+[Main code where the logic happens](https://github.com/fakenickels/remachine/blob/master/example/application/App.re)
+
 ⚠️⚠️⚠️️ WORK IN PROGRESS ⚠️⚠️⚠️
 
 ## 
